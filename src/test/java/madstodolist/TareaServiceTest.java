@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class TareaServiceTest {
 
 
     @Test
+    @Transactional
     public void testNuevaTareaUsuario() {
         // GIVEN
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
@@ -77,6 +79,7 @@ public class TareaServiceTest {
     }
 
     @Test
+    @Transactional
     public void testModificarTarea() {
         // GIVEN
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
@@ -96,6 +99,7 @@ public class TareaServiceTest {
     }
 
     @Test
+    @Transactional
     public void testBorrarTarea() {
         // GIVEN
 
