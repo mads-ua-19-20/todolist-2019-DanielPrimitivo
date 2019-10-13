@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -112,5 +114,22 @@ public class UsuarioServiceTest {
         // THEN
 
         assertThat(usuario.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    public void servicioConsultaUsuariosDevuelveListaUsuarios() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        Usuario usuario = new Usuario("juan.lopez@gmail.com");
+        usuario.setId(1L);
+
+        //WHEN
+
+        List<Usuario> listaUsuarios = usuarioService.allUsuarios();
+
+        // THEN
+
+        assertThat(listaUsuarios).contains(usuario);
     }
 }
