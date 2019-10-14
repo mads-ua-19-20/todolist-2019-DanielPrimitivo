@@ -1,5 +1,7 @@
 package madstodolist.model;
 
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,7 +26,7 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
-    private boolean admin;
+    private String tipo;
 
     // Definimos el tipo de fetch como EAGER para que
     // cualquier consulta que devuelve un usuario rellene automáticamente
@@ -85,9 +87,9 @@ public class Usuario implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public boolean getAdmin() { return admin; }
+    public String getTipo() { return tipo; }
 
-    public void setAdmin(boolean admin) { this.admin = admin; }
+    public void setTipo(String admin) { this.tipo = admin; }
 
     public List<Tarea> getTareas() {
         return tareas;
