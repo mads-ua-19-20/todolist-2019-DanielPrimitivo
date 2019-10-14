@@ -10,25 +10,29 @@
 
     <div class="row mt-3">
         <div class="col">
-            <h2 th:text="'Listado de usuarios'"></h2>
+            <h2 th:text="'Descripción usuario'"></h2>
         </div>
     </div>
 
     <div class="row mt-3">
         <div class="col">
             <table class="table table-striped">
-                <thead>
+                <tbody>
                 <tr>
                     <th>Id</th>
-                    <th>Correo electrónico</th>
-                    <th>Acción</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="usuario: ${listaUsuarios}">
                     <td th:text="${usuario.id}"></td>
+                </tr>
+                <tr>
+                    <th>Correo electrónico</th>
                     <td th:text="${usuario.email}"></td>
-                    <td><a class="btn btn-primary btn-xs" th:href="@{/usuarios/{id}(id=${usuario.id})}"/>Ver</a></td>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <td th:text="${usuario.nombre}"></td>
+                </tr>
+                <tr>
+                    <th>Fecha nacimiento</th>
+                    <td th:text="${usuario.fechaNacimiento}"></td>
                 </tr>
                 </tbody>
             </table>
