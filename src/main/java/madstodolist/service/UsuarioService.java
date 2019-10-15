@@ -82,4 +82,23 @@ public class UsuarioService {
 
         return existeAdmin;
     }
+
+    @Transactional(readOnly = true)
+    public boolean esAdmin(Long idUsuario) {
+        boolean esAdmin;
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        if (usuario == null) {
+            throw new UsuarioServiceException("Usuario " + idUsuario + "no existe al comprobar admin");
+        }
+        else {
+            if (usuario.getTipo() == "admin") {
+                esAdmin = true;
+            } else {
+                esAdmin = false;
+            }
+        }
+
+        return esAdmin;
+    }
 }
