@@ -146,4 +146,18 @@ public class UsuarioServiceTest {
 
         assertThat(existeAdmin).isTrue();
     }
+
+    @Test
+    public void servicioEsAdmin() {
+        // GIVEN
+        // Datos cargados de datos-test.sql
+
+        // WHEN
+
+        boolean esAdmin = usuarioService.esAdmin(3L);
+
+        // THEN
+
+        assertThat(esAdmin).isFalse();
+    }
 }
