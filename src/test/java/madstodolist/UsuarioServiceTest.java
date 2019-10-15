@@ -132,4 +132,18 @@ public class UsuarioServiceTest {
 
         assertThat(listaUsuarios).contains(usuario);
     }
+
+    @Test
+    public void servicioExisteAdmin() {
+        // GIVEN
+        // Datos cargados de datos-test.sql
+
+        //WHEN
+
+        boolean existeAdmin = usuarioService.existeAdmin();
+
+        // THEN
+
+        assertThat(existeAdmin).isTrue();
+    }
 }
