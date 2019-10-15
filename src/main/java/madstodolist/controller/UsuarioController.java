@@ -21,14 +21,23 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public String listadoUsuarios(Model model, HttpSession session) {
-        Usuario usuario = null;
-        List<Usuario> listaUsuarios = null;
+        Usuario usuario;
+        List<Usuario> listaUsuarios;
 
         if (session.getAttribute("idUsuarioLogeado") != null) {
             Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
 
-            usuario = usuarioService.findById(idUsuarioLogeado);
-            listaUsuarios = usuarioService.allUsuarios();
+            if (usuarioService.esAdmin(idUsuarioLogeado)) {
+                usuario = usuarioService.findById(idUsuarioLogeado);
+                if (usuario == null) {
+                    throw new UsuarioNotFoundException();
+                }
+
+                listaUsuarios = usuarioService.allUsuarios();
+            }
+            else {
+                throw new UsuarioNoLogeadoException();
+            }
         }
         else {
             throw new UsuarioNoLogeadoException();
@@ -46,11 +55,20 @@ public class UsuarioController {
         Usuario usuarioVer;
         if (session.getAttribute("idUsuarioLogeado") != null) {
             Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
-            usuario = usuarioService.findById(idUsuarioLogeado);
 
-            usuarioVer = usuarioService.findById(idUsuario);
-            if (usuarioVer == null) {
-                throw new UsuarioNotFoundException();
+            if (usuarioService.esAdmin(idUsuarioLogeado)) {
+                usuario = usuarioService.findById(idUsuarioLogeado);
+                if (usuario == null) {
+                    throw new UsuarioNotFoundException();
+                }
+
+                usuarioVer = usuarioService.findById(idUsuario);
+                if (usuarioVer == null) {
+                    throw new UsuarioNotFoundException();
+                }
+            }
+            else {
+                throw new UsuarioNoLogeadoException();
             }
         }
         else {
