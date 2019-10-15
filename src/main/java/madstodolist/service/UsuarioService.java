@@ -68,4 +68,18 @@ public class UsuarioService {
 
         return listaUsuarios;
     }
+
+    @Transactional(readOnly = true)
+    public boolean existeAdmin() {
+        boolean existeAdmin;
+
+        if (usuarioRepository.findByTipo("admin").size() > 0) {
+            existeAdmin = true;
+        }
+        else {
+            existeAdmin = false;
+        }
+
+        return existeAdmin;
+    }
 }

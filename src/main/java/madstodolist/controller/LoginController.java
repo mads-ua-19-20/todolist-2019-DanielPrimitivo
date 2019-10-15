@@ -59,6 +59,9 @@ public class LoginController {
 
     @GetMapping("/registro")
     public String registroForm(Model model) {
+        boolean existeAdmin = usuarioService.existeAdmin();
+
+        model.addAttribute("existeAdmin", existeAdmin);
         model.addAttribute("registroData", new RegistroData());
         return "formRegistro";
     }
@@ -80,6 +83,14 @@ public class LoginController {
         usuario.setPassword(registroData.getPassword());
         usuario.setFechaNacimiento(registroData.getFechaNacimiento());
         usuario.setNombre(registroData.getNombre());
+
+        boolean esAdmin = registroData.getTipo();
+        if (esAdmin) {
+            usuario.setTipo("admin");
+        }
+        else {
+            usuario.setTipo("usuario");
+        }
 
         usuarioService.registrar(usuario);
         return "redirect:/login";
