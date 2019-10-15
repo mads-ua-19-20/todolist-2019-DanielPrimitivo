@@ -12,6 +12,7 @@ public class RegistroData {
     private String nombre;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date fechaNacimiento;
+    private boolean tipo;
 
     public String geteMail() {
         return eMail;
@@ -44,4 +45,8 @@ public class RegistroData {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+    public boolean getTipo() { return tipo; }
+
+    public void setTipo(boolean tipo) { this.tipo = tipo; }
 }

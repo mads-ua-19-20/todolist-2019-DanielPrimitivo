@@ -90,4 +90,31 @@ public class UsuarioWebTest {
                 .andExpect(content().string(containsString("No existe usuario")));
     }
 
+    @Test
+    public void servicioLoginUsuarioAdminOK() throws Exception {
+
+        Usuario usuario = new Usuario("juan.lopez@gmail.com");
+        usuario.setId(1L);
+        usuario.setPassword("12345678");
+        usuario.setTipo("admin");
+
+        when(usuarioService.login("juan.lopez@gmail.com", "12345678")).thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
+        when(usuarioService.findByEmail("juan.lopez@gmail.com")).thenReturn(usuario);
+
+        this.mockMvc.perform(post("/login")
+                .param("eMail", "juan.lopez@gmail.com")
+                .param("password", "12345678"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/usuarios"));
+    }
+
+    @Test
+    public void servicioRegistroUsuario() throws Exception {
+        when(usuarioService.existeAdmin()).thenReturn(false);
+
+        this.mockMvc.perform(get("/registro"))
+                .andDo(print())
+                .andExpect(content().string(containsString("Administrador")));
+    }
 }
