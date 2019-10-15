@@ -19,9 +19,6 @@ public class UsuarioController {
     @Autowired
     UsuarioService usuarioService;
 
-    @Autowired
-    ManagerUserSesion managerUserSesion;
-
     @GetMapping("/usuarios")
     public String listadoUsuarios(Model model, HttpSession session) {
         Usuario usuario = null;
@@ -45,14 +42,23 @@ public class UsuarioController {
 
     @GetMapping("/usuarios/{id}")
     public String descripcionUsuario(@PathVariable(value="id") Long idUsuario, Model model, HttpSession session) {
-        managerUserSesion.comprobarUsuarioLogeado(session, idUsuario);
+        Usuario usuario;
+        Usuario usuarioVer;
+        if (session.getAttribute("idUsuarioLogeado") != null) {
+            Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+            usuario = usuarioService.findById(idUsuarioLogeado);
 
-        Usuario usuario = usuarioService.findById(idUsuario);
-        if (usuario == null) {
-            throw new UsuarioNotFoundException();
+            usuarioVer = usuarioService.findById(idUsuario);
+            if (usuarioVer == null) {
+                throw new UsuarioNotFoundException();
+            }
+        }
+        else {
+            throw new UsuarioNoLogeadoException();
         }
 
         model.addAttribute("usuario", usuario);
+        model.addAttribute("usuarioVer", usuarioVer);
 
         return "descripcionUsuario";
     }
