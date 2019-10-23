@@ -144,7 +144,7 @@ public class UsuarioServiceTest {
 
         // THEN
 
-        assertThat(existeAdmin).isTrue();
+        assertThat(existeAdmin).isFalse();
     }
 
     @Test
