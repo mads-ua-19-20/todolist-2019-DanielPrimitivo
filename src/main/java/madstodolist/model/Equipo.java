@@ -4,19 +4,24 @@ import javax.persistence.*;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "equipos")
 public class Equipo implements Serializable {
 
-    private static final long seerialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
     private String nombre;
+
+    @ManyToMany
+    Set<Usuario> usuarios = new HashSet<>();
 
     // Constructor vacío necesario para JPA/Hibernate.
     // Lo hacemos privado para que no se pueda usar desde el código de la aplicación. Para crear un
@@ -31,6 +36,8 @@ public class Equipo implements Serializable {
     public void setId(Long id) { this.id = id; }
 
     public String getNombre() { return nombre; }
+
+    public Set<Usuario> getUsuarios() { return usuarios; }
 
     @Override
     public boolean equals(Object o) {
