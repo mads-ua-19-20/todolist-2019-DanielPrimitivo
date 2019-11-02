@@ -18,6 +18,12 @@ public class Equipo implements Serializable {
     @NotNull
     private String nombre;
 
+    // Constructor vacío necesario para JPA/Hibernate.
+    // Lo hacemos privado para que no se pueda usar desde el código de la aplicación. Para crear un
+    // equipo en la aplicación habrá que llamar al constructor público. Hibernate sí que lo puede usar, a pesar
+    // de ser privado.
+    private Equipo() {}
+
     public Equipo(String nombre) { this.nombre = nombre; }
 
     public Long getId() { return id; }
