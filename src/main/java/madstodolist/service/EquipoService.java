@@ -30,4 +30,7 @@ public class EquipoService {
         Collections.sort(equipos, Comparator.comparing(Equipo::getNombre));
         return equipos;
     }
+
+    @Transactional(readOnly = true)
+    public Equipo findById(Long equipoId) { return equipoRepository.findById(equipoId).orElse(null); }
 }
