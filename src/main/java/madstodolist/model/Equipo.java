@@ -44,6 +44,8 @@ public class Equipo implements Serializable {
 
     public void addUsuario(Usuario usuario) { usuarios.add(usuario); }
 
+    public void delUsuario(Usuario usuario) { usuarios.remove(usuario); }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
