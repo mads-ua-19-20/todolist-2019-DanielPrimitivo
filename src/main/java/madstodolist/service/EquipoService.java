@@ -25,6 +25,13 @@ public class EquipoService {
         this.equipoRepository = equipoRepository;
     }
 
+    @Transactional
+    public Equipo nuevoEquipo(String nombreEquipo) {
+        Equipo equipo = new Equipo(nombreEquipo);
+        equipoRepository.save(equipo);
+        return equipo;
+    }
+
     @Transactional(readOnly = true)
     public List<Equipo> findAllOrderedByName() {
         List<Equipo> equipos = new ArrayList(equipoRepository.findAll());
