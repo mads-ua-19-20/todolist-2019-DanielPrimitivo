@@ -20,4 +20,11 @@ public class ManagerUserSesion {
         if (!idUsuario.equals(idUsuarioLogeado))
             throw new UsuarioNoLogeadoException();
     }
+
+    public void comprobarUsuarioLogeadoSession(HttpSession session) {
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+        if (idUsuarioLogeado == null) {
+            throw new UsuarioNoLogeadoException();
+        }
+    }
 }
