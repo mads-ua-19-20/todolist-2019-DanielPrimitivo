@@ -127,4 +127,20 @@ public class EquipoTest {
         // THEN
         assertThat(equipos).hasSize(2);
     }
+
+    @Test
+    @Transactional
+    public void addUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+        Equipo equipo = new Equipo("Proyecto Prueba");
+        Usuario usuario = new Usuario("prueba@gmail.com");
+
+        // WHEN
+        equipo.addUsuario(usuario);
+
+        // THEN
+        assertThat(equipo.getUsuarios()).contains(usuario);
+        assertThat(equipo.getUsuarios()).hasSize(1);
+    }
 }
