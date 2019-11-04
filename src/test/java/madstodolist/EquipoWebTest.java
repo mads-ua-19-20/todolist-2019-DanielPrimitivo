@@ -55,4 +55,22 @@ public class EquipoWebTest {
                 .andDo(print())
                 .andExpect(content().string(containsString("Proyecto Diamante")));
     }
+
+    @Test
+    public void equipoDevuelveListadoUsuarios() throws Exception {
+        Usuario usuario = new Usuario("domingo@ua.es");
+        usuario.setId(1L);
+        List<Usuario> usuariosEquipo = new ArrayList();
+        usuariosEquipo.add(usuario);
+        Equipo equipo = new Equipo("Proyecto Diamante");
+        equipo.setId(1L);
+
+        when(usuarioService.findById(null)).thenReturn(usuario);
+        when(equipoService.findById(1L)).thenReturn(equipo);
+        when(equipoService.usuariosEquipo(1L)).thenReturn(usuariosEquipo);
+
+        this.mockMvc.perform(get("/equipos/1/usuarios"))
+                .andDo(print())
+                .andExpect(content().string(containsString("domingo@ua")));
+    }
 }
