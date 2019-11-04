@@ -2,6 +2,7 @@ package madstodolist.service;
 
 import madstodolist.model.Equipo;
 import madstodolist.model.EquipoRepository;
+import madstodolist.model.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,15 @@ public class EquipoService {
 
     @Transactional(readOnly = true)
     public Equipo findById(Long equipoId) { return equipoRepository.findById(equipoId).orElse(null); }
+
+    @Transactional(readOnly = true)
+    public List<Usuario> usuariosEquipo(Long equipoId) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        if (equipo == null) {
+            throw new EquipoServiceException("Equipo " + equipoId + " no existe");
+        }
+
+        List<Usuario> usuarios = new ArrayList(equipo.getUsuarios());
+        return usuarios;
+    }
 }
