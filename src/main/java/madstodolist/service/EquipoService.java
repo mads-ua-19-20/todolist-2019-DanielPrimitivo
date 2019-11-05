@@ -43,6 +43,9 @@ public class EquipoService {
         }
 
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        if (usuario == null) {
+            throw new UsuarioServiceException("Usuario " + usuarioId + " no existe");
+        }
 
         equipo.addUsuario(usuario);
         equipoRepository.save(equipo);
