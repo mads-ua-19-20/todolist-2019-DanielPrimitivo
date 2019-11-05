@@ -1,6 +1,7 @@
 package madstodolist.controller;
 
 import madstodolist.authentication.ManagerUserSesion;
+import madstodolist.authentication.UsuarioNoLogeadoException;
 import madstodolist.controller.exception.EquipoNotFoundException;
 import madstodolist.controller.exception.UsuarioNotFoundException;
 import madstodolist.model.Equipo;
@@ -150,5 +151,31 @@ public class EquipoController {
         model.addAttribute("equipo", equipo);
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "equipoListaUsuarios";
+    }
+
+    @DeleteMapping("/equipos/{id}")
+    @ResponseBody
+    public String borrarEquipo(@PathVariable(value="id") Long equipoId, RedirectAttributes flash,
+                               HttpSession session) {
+
+
+        Equipo equipo = equipoService.findById(equipoId);
+        if (equipo == null) {
+            throw new EquipoNotFoundException();
+        }
+
+        managerUserSesion.comprobarUsuarioLogeadoSession(session);
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        Usuario usuario = usuarioService.findById(idUsuarioLogeado);
+        if (usuario == null) {
+            throw new UsuarioNotFoundException();
+        }
+
+
+
+        equipoService.borrarEquipo(equipoId);
+        flash.addFlashAttribute("mensaje", "Equipo borrado correctamente");
+        return "";
     }
 }
