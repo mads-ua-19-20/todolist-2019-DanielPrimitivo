@@ -63,6 +63,22 @@ public class EquipoWebTest {
     }
 
     @Test
+    public void addUsuarioEquipoApuntarme() throws Exception {
+        Usuario usuario = new Usuario("domingo@ua.es");
+        usuario.setId(1L);
+        Equipo equipo = new Equipo("Proyecto Prueba");
+        equipo.setId(1L);
+
+        when(usuarioService.findById(null)).thenReturn(usuario);
+        when(equipoService.findById(1L)).thenReturn(equipo);
+        when(equipoService.addUsuarioEquipo(1L, null)).thenReturn(equipo);
+
+        this.mockMvc.perform(get("/equipos/1/usuarios"))
+                .andDo(print())
+                .andExpect(content().string(containsString("/equipos/1/usuarios/add")));
+    }
+
+    @Test
     public void equiposDevuelveListado() throws Exception {
         Usuario usuario = new Usuario("domingo@ua.es");
         usuario.setId(1L);
