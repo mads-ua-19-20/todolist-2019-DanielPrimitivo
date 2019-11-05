@@ -28,7 +28,7 @@
                 <tr th:each="equipo: ${equipos}">
                     <td th:text="${equipo.id}"></td>
                     <td><a th:text="${equipo.nombre}" th:href="@{/equipos/{id}/usuarios(id=${equipo.id})}"/></td>
-                    <td>
+                    <td><a class="btn btn-primary btn-xs" th:href="@{/equipos/{id}/editar(id=${equipo.id})}"/>editar</a>
                         <a class="btn btn-danger btn-xs" href="#" onmouseover="" style="cursor: pointer;"
                            th:onclick="'del(\'/equipos/' + ${equipo.id} + '\')'">borrar</a>
                     </td>

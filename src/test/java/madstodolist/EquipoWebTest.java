@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -127,5 +128,26 @@ public class EquipoWebTest {
         this.mockMvc.perform(get("/equipos/1/usuarios"))
                 .andDo(print())
                 .andExpect(content().string(containsString("domingo@ua")));
+    }
+
+    @Test
+    public void editarEquipoDevuelveForm() throws Exception {
+        Usuario usuario = new Usuario("domingo@ua.es");
+        usuario.setId(1L);
+        Equipo equipo = new Equipo("Proyecto Diamante");
+        equipo.setId(1L);
+
+        when(usuarioService.findById(null)).thenReturn(usuario);
+        when(equipoService.findById(1L)).thenReturn(equipo);
+
+        this.mockMvc.perform(get("/equipos/1/editar"))
+                .andDo(print())
+                .andExpect(content().string(allOf(
+                        // Contiene la acción para enviar el post a la URL correcta
+                        containsString("action=\"/equipos/1/editar\""),
+                        // Contiene el texto de la tarea a editar
+                        containsString("Proyecto Diamante"),
+                        // Contiene enlace a listar tareas del usuario si se cancela la edición
+                        containsString("href=\"/equipos\""))));
     }
 }
