@@ -56,6 +56,16 @@ public class EquipoService {
         return equipo;
     }
 
+    @Transactional
+    public Equipo delUsuarioEquipo(Long equipoId, Long usuarioId) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+
+        equipo.delUsuario(usuario);
+        equipoRepository.save(equipo);
+        return equipo;
+    }
+
     @Transactional(readOnly = true)
     public List<Equipo> findAllOrderedByName() {
         List<Equipo> equipos = new ArrayList(equipoRepository.findAll());

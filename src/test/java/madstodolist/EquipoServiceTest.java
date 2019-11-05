@@ -153,4 +153,18 @@ public class EquipoServiceTest {
         // THEN
         // Se produce una excepción comprobada con el expected del test
     }
+
+    @Test
+    @Transactional
+    public void testEquipoDelUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        Equipo equipo = equipoService.delUsuarioEquipo(1L, 1L);
+
+        // THEN
+        Usuario usuario = usuarioService.findById(1L);
+        assertThat(equipo.getUsuarios()).doesNotContain(usuario);
+    }
 }
