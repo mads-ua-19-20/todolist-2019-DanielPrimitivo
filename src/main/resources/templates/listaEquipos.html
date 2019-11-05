@@ -21,14 +21,14 @@
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th>Acción</th>
+                    <th th:if="${usuario.tipo == 'admin'}">Acción</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="equipo: ${equipos}">
                     <td th:text="${equipo.id}"></td>
                     <td><a th:text="${equipo.nombre}" th:href="@{/equipos/{id}/usuarios(id=${equipo.id})}"/></td>
-                    <td><a class="btn btn-primary btn-xs" th:href="@{/equipos/{id}/editar(id=${equipo.id})}"/>editar</a>
+                    <td th:if="${usuario.tipo == 'admin'}"><a class="btn btn-primary btn-xs" th:href="@{/equipos/{id}/editar(id=${equipo.id})}"/>editar</a>
                         <a class="btn btn-danger btn-xs" href="#" onmouseover="" style="cursor: pointer;"
                            th:onclick="'del(\'/equipos/' + ${equipo.id} + '\')'">borrar</a>
                     </td>
