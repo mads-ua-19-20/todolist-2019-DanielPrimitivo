@@ -3,6 +3,7 @@ package madstodolist;
 import madstodolist.model.Equipo;
 import madstodolist.model.Usuario;
 import madstodolist.service.EquipoService;
+import madstodolist.service.EquipoServiceException;
 import madstodolist.service.UsuarioService;
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -86,5 +88,119 @@ public class EquipoServiceTest {
         assertThat(usuarios.get(0).getEquipos()).hasSize(1);
         // Y después que el elemento es el equipo Proyecto Cobalto
         assertThat(usuarios.get(0).getEquipos().stream().findFirst().get().getNombre()).isEqualTo("Proyecto Cobalto");
+    }
+
+    @Test
+    @Transactional
+    public void testNuevoEquipo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        Equipo equipo = equipoService.nuevoEquipo("Equipo Prueba");
+
+        // THEN
+        List<Equipo> equipos = equipoService.findAllOrderedByName();
+        assertThat(equipos).contains(equipo);
+    }
+
+    @Test
+    @Transactional
+    public void testEquipoAddUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        Equipo equipo = equipoService.addUsuarioEquipo(1L, 2L);
+
+        // THEN
+        Usuario usuario = usuarioService.findById(2L);
+        assertThat(equipo.getUsuarios()).contains(usuario);
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoErroneoAddUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.addUsuarioEquipo(-1L, 1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoAddUsuarioErroneo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.addUsuarioEquipo(1L, -1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoAddUsuarioYaContiene() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.addUsuarioEquipo(1L, 1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test
+    @Transactional
+    public void testEquipoDelUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        Equipo equipo = equipoService.delUsuarioEquipo(1L, 1L);
+
+        // THEN
+        Usuario usuario = usuarioService.findById(1L);
+        assertThat(equipo.getUsuarios()).doesNotContain(usuario);
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoErroneoDelUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.delUsuarioEquipo(-1L, 1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoDelUsuarioErroneo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.delUsuarioEquipo(1L, -1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoDelUsuarioNoContiene() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.delUsuarioEquipo(2L, 3L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
     }
 }
