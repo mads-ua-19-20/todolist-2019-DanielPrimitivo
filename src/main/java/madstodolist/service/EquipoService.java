@@ -3,6 +3,7 @@ package madstodolist.service;
 import madstodolist.model.Equipo;
 import madstodolist.model.EquipoRepository;
 import madstodolist.model.Usuario;
+import madstodolist.model.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,27 @@ public class EquipoService {
     Logger logger = LoggerFactory.getLogger(EquipoService.class);
 
     private EquipoRepository equipoRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    public EquipoService(EquipoRepository equipoRepository) {
+    public EquipoService(EquipoRepository equipoRepository, UsuarioRepository usuarioRepository) {
         this.equipoRepository = equipoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Transactional
     public Equipo nuevoEquipo(String nombreEquipo) {
         Equipo equipo = new Equipo(nombreEquipo);
+        equipoRepository.save(equipo);
+        return equipo;
+    }
+
+    @Transactional
+    public Equipo addUsuarioEquipo(Long equipoId, Long usuarioId) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+
+        equipo.addUsuario(usuario);
         equipoRepository.save(equipo);
         return equipo;
     }

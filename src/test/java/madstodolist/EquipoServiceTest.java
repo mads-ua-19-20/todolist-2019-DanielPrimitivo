@@ -102,4 +102,18 @@ public class EquipoServiceTest {
         List<Equipo> equipos = equipoService.findAllOrderedByName();
         assertThat(equipos).contains(equipo);
     }
+
+    @Test
+    @Transactional
+    public void testEquipoAddUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        Equipo equipo = equipoService.addUsuarioEquipo(1L, 2L);
+
+        // THEN
+        Usuario usuario = usuarioService.findById(2L);
+        assertThat(equipo.getUsuarios()).contains(usuario);
+    }
 }
