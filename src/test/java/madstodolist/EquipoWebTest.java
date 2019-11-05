@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,28 @@ public class EquipoWebTest {
 
     @MockBean
     private ManagerUserSesion managerUserSesion;
+
+    @Test
+    public void nuevoEquipoDevuelveForm() throws Exception {
+        Usuario usuario = new Usuario("domingo@ua.es");
+        usuario.setId(1L);
+
+        when(usuarioService.findById(null)).thenReturn(usuario);
+
+        this.mockMvc.perform(get("/equipos/nuevo"))
+                .andDo(print())
+                .andExpect(content().string(containsString("action=\"/equipos/nuevo\"")));
+    }
+
+    @Test
+    public void nuevoEquipoDevuelveNotFound() throws Exception {
+
+        when(usuarioService.findById(null)).thenReturn(null);
+
+        this.mockMvc.perform(get("/equipos/nuevo"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     public void equiposDevuelveListado() throws Exception {
