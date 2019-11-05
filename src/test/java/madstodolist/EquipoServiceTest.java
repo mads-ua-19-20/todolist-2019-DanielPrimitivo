@@ -203,4 +203,58 @@ public class EquipoServiceTest {
         // THEN
         // Se produce una excepción comprobada con el expected del test
     }
+
+    @Test
+    @Transactional
+    public void testBorrarEquipo() {
+        // GIVEN
+        Equipo equipo = equipoService.nuevoEquipo("Proyecto Prueba");
+
+        // WHEN
+        equipoService.borrarEquipo(equipo.getId());
+
+        // THEN
+        assertThat(equipoService.findById(equipo.getId())).isNull();
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testBorrarEquipoNoExiste() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.borrarEquipo(-1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test
+    @Transactional
+    public void testModificarEquipo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+        Equipo equipo = equipoService.nuevoEquipo("Proyecto Zafiro");
+        Long idNuevoEquipo = equipo.getId();
+
+        // WHEN
+        Equipo equipoModificado = equipoService.modificaEquipo(idNuevoEquipo, "Equipo Prueba");
+        Equipo equipoBD = equipoService.findById(idNuevoEquipo);
+
+        // THEN
+        assertThat(equipoModificado.getNombre()).isEqualTo("Equipo Prueba");
+        assertThat(equipoBD.getNombre()).isEqualTo("Equipo Prueba");
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testModificarEquipoNoExiste() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.modificaEquipo(-1L, "Proyecto Prueba");
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
 }

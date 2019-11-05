@@ -159,4 +159,16 @@ public class EquipoTest {
         assertThat(equipo.getUsuarios()).doesNotContain(usuario);
         assertThat(equipo.getUsuarios()).hasSize(0);
     }
+
+    @Test
+    public void setNombre() {
+        // GIVEN
+        Equipo equipo = new Equipo("Proyecto Cobalto");
+
+        //WHEN
+        equipo.setNombre("Proyecto Prueba");
+
+        // THEN
+        assertThat(equipo.getNombre()).isEqualTo("Proyecto Prueba");
+    }
 }

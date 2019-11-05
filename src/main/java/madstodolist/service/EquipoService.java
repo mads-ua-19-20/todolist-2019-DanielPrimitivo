@@ -97,4 +97,24 @@ public class EquipoService {
         List<Usuario> usuarios = new ArrayList(equipo.getUsuarios());
         return usuarios;
     }
+
+    @Transactional
+    public Equipo modificaEquipo(Long equipoId, String nuevoNombre) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        if (equipo == null) {
+            throw new EquipoServiceException("No existe equipo con id " + equipoId);
+        }
+        equipo.setNombre(nuevoNombre);
+        equipoRepository.save(equipo);
+        return equipo;
+    }
+
+    @Transactional
+    public void borrarEquipo(Long equipoId) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        if (equipo == null) {
+            throw new EquipoServiceException("No existe equipo con id " + equipoId);
+        }
+        equipoRepository.delete(equipo);
+    }
 }
