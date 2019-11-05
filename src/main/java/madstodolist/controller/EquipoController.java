@@ -169,6 +169,11 @@ public class EquipoController {
             throw new EquipoNotFoundException();
         }
 
+        boolean admin = usuarioService.esAdmin(idUsuarioLogeado);
+        if (!admin) {
+            throw new UsuarioNoLogeadoException();
+        }
+
         model.addAttribute("equipo", equipo);
         model.addAttribute("usuario", usuario);
         equipoData.setNombre(equipo.getNombre());

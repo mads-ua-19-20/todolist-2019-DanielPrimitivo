@@ -134,11 +134,13 @@ public class EquipoWebTest {
     public void editarEquipoDevuelveForm() throws Exception {
         Usuario usuario = new Usuario("domingo@ua.es");
         usuario.setId(1L);
+        usuario.setTipo("admin");
         Equipo equipo = new Equipo("Proyecto Diamante");
         equipo.setId(1L);
 
         when(usuarioService.findById(null)).thenReturn(usuario);
         when(equipoService.findById(1L)).thenReturn(equipo);
+        when(usuarioService.esAdmin(null)).thenReturn(true);
 
         this.mockMvc.perform(get("/equipos/1/editar"))
                 .andDo(print())
