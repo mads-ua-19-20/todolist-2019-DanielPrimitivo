@@ -5,7 +5,6 @@ import madstodolist.model.Usuario;
 import madstodolist.service.EquipoService;
 import madstodolist.service.EquipoServiceException;
 import madstodolist.service.UsuarioService;
-import madstodolist.service.UsuarioServiceException;
 import org.hibernate.LazyInitializationException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -131,13 +130,25 @@ public class EquipoServiceTest {
         // Se produce una excepción comprobada con el expected del test
     }
 
-    @Test(expected = UsuarioServiceException.class)
+    @Test(expected = EquipoServiceException.class)
     public void testEquipoAddUsuarioErroneo() {
         // GIVEN
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
 
         // WHEN
         equipoService.addUsuarioEquipo(1L, -1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoAddUsuarioYaContiene() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.addUsuarioEquipo(1L, 1L);
 
         // THEN
         // Se produce una excepción comprobada con el expected del test
