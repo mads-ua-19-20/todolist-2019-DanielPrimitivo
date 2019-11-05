@@ -245,4 +245,16 @@ public class EquipoServiceTest {
         assertThat(equipoModificado.getNombre()).isEqualTo("Equipo Prueba");
         assertThat(equipoBD.getNombre()).isEqualTo("Equipo Prueba");
     }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testModificarEquipoNoExiste() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.modificaEquipo(-1L, "Proyecto Prueba");
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
 }
