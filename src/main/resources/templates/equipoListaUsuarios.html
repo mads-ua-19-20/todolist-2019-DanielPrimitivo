@@ -30,7 +30,8 @@
                 </tr>
                 </tbody>
             </table>
-            <p><a class="btn btn-primary" th:href="@{/equipos/{id}/usuarios/add(id=${equipo.id})}">Apuntarme</a></p>
+            <p><a class="btn btn-primary" th:href="@{/equipos/{id}/usuarios/add(id=${equipo.id})}">Apuntarme</a>
+                <a class="btn btn-danger" th:href="@{/equipos/{id}/usuarios/del(id=${equipo.id})}">Borrarme</a></p>
         </div>
     </div>
     <div class="row mt-2">
