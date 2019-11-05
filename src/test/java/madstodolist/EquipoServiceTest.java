@@ -174,7 +174,19 @@ public class EquipoServiceTest {
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
 
         // WHEN
-        equipoService.addUsuarioEquipo(-1L, 1L);
+        equipoService.delUsuarioEquipo(-1L, 1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoDelUsuarioErroneo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.delUsuarioEquipo(1L, -1L);
 
         // THEN
         // Se produce una excepción comprobada con el expected del test
