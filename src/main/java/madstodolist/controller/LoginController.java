@@ -40,8 +40,8 @@ public class LoginController {
             Usuario usuario = usuarioService.findByEmail(loginData.geteMail());
 
             managerUserSesion.logearUsuario(session, usuario.getId());
-
-            if (usuario.getTipo() == "admin") {
+            String adm = "admin";
+            if (usuario.getTipo().equals(adm)) {
                 return "redirect:/usuarios";
             }
             else {

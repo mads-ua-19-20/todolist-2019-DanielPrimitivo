@@ -1,6 +1,7 @@
 package madstodolist.controller;
 
 import madstodolist.authentication.ManagerUserSesion;
+import madstodolist.authentication.UsuarioNoLogeadoException;
 import madstodolist.controller.exception.EquipoNotFoundException;
 import madstodolist.controller.exception.UsuarioNotFoundException;
 import madstodolist.model.Equipo;
@@ -150,5 +151,77 @@ public class EquipoController {
         model.addAttribute("equipo", equipo);
         model.addAttribute("listaUsuarios", listaUsuarios);
         return "equipoListaUsuarios";
+    }
+
+    @GetMapping("/equipos/{id}/editar")
+    public String formEditarEquipo(@PathVariable(value="id") Long equipoId, @ModelAttribute EquipoData equipoData,
+                                   Model model, HttpSession session) {
+        managerUserSesion.comprobarUsuarioLogeadoSession(session);
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        Usuario usuario = usuarioService.findById(idUsuarioLogeado);
+        if (usuario == null) {
+            throw new UsuarioNotFoundException();
+        }
+
+        Equipo equipo = equipoService.findById(equipoId);
+        if (equipo == null) {
+            throw new EquipoNotFoundException();
+        }
+
+        boolean admin = usuarioService.esAdmin(idUsuarioLogeado);
+        if (!admin) {
+            throw new UsuarioNoLogeadoException();
+        }
+
+        model.addAttribute("equipo", equipo);
+        model.addAttribute("usuario", usuario);
+        equipoData.setNombre(equipo.getNombre());
+        return "formEditarEquipo";
+    }
+
+    @PostMapping("/equipos/{id}/editar")
+    public String grabaEquipoModificado(@PathVariable(value="id") Long equipoId, @ModelAttribute EquipoData equipoData,
+                                        Model model, RedirectAttributes flash, HttpSession session) {
+        managerUserSesion.comprobarUsuarioLogeadoSession(session);
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        Usuario usuario = usuarioService.findById(idUsuarioLogeado);
+        if (usuario == null) {
+            throw new UsuarioNotFoundException();
+        }
+
+        Equipo equipo = equipoService.findById(equipoId);
+        if (equipo == null) {
+            throw new EquipoNotFoundException();
+        }
+
+        equipoService.modificaEquipo(equipoId, equipoData.getNombre());
+        flash.addFlashAttribute("mensaje", "Equipo modificado correctamente");
+        return "redirect:/equipos";
+    }
+
+    @DeleteMapping("/equipos/{id}")
+    @ResponseBody
+    public String borrarEquipo(@PathVariable(value="id") Long equipoId, RedirectAttributes flash,
+                               HttpSession session) {
+        Equipo equipo = equipoService.findById(equipoId);
+        if (equipo == null) {
+            throw new EquipoNotFoundException();
+        }
+
+        managerUserSesion.comprobarUsuarioLogeadoSession(session);
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        Usuario usuario = usuarioService.findById(idUsuarioLogeado);
+        if (usuario == null) {
+            throw new UsuarioNotFoundException();
+        }
+
+
+
+        equipoService.borrarEquipo(equipoId);
+        flash.addFlashAttribute("mensaje", "Equipo borrado correctamente");
+        return "";
     }
 }

@@ -92,9 +92,11 @@ public class UsuarioService {
             throw new UsuarioServiceException("Usuario " + idUsuario + "no existe al comprobar admin");
         }
         else {
-            if (usuario.getTipo() == "admin") {
+            String adm = "admin";
+            if (usuario.getTipo().equals(adm)) {
                 esAdmin = true;
-            } else {
+            }
+            else {
                 esAdmin = false;
             }
         }
