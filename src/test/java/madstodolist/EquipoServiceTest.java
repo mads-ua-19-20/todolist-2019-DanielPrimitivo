@@ -167,4 +167,16 @@ public class EquipoServiceTest {
         Usuario usuario = usuarioService.findById(1L);
         assertThat(equipo.getUsuarios()).doesNotContain(usuario);
     }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoErroneoDelUsuario() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.addUsuarioEquipo(-1L, 1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
 }

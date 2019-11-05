@@ -59,6 +59,10 @@ public class EquipoService {
     @Transactional
     public Equipo delUsuarioEquipo(Long equipoId, Long usuarioId) {
         Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        if (equipo == null) {
+            throw new EquipoServiceException("Equipo " + equipoId + " no existe");
+        }
+
         Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
 
         equipo.delUsuario(usuario);
