@@ -59,6 +59,33 @@ public class EquipoController {
         return "redirect:/equipos";
     }
 
+    @GetMapping("/equipos/{id}/usuarios/add")
+    public String equipoAddUsuario(@PathVariable(value="id") Long equipoId, Model model,
+                                   RedirectAttributes flash, HttpSession session) {
+        managerUserSesion.comprobarUsuarioLogeadoSession(session);
+        Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
+
+        Usuario usuario = usuarioService.findById(idUsuarioLogeado);
+        if (usuario == null) {
+            throw new UsuarioNotFoundException();
+        }
+
+        Equipo equipo = equipoService.findById(equipoId);
+        if (equipo == null) {
+            throw new EquipoNotFoundException();
+        }
+
+        try {
+            Equipo equipoConUsuario = equipoService.addUsuarioEquipo(equipoId, idUsuarioLogeado);
+            flash.addFlashAttribute("mensaje", "Te has apuntado correctamente");
+        }
+        catch (Exception e) {
+            flash.addFlashAttribute("mensaje", "Ya estabas apuntado a este equipo");
+        }
+
+        return "redirect:/equipos/" + equipoId + "/usuarios";
+    }
+
     @GetMapping("/equipos")
     public String listadoEquipos(Model model, HttpSession session) {
 
