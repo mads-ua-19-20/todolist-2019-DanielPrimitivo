@@ -203,4 +203,17 @@ public class EquipoServiceTest {
         // THEN
         // Se produce una excepción comprobada con el expected del test
     }
+
+    @Test
+    @Transactional
+    public void testBorrarEquipo() {
+        // GIVEN
+        Equipo equipo = equipoService.nuevoEquipo("Proyecto Prueba");
+
+        // WHEN
+        equipoService.borrarEquipo(equipo.getId());
+
+        // THEN
+        assertThat(equipoService.findById(equipo.getId())).isNull();
+    }
 }

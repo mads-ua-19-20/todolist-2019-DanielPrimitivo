@@ -97,4 +97,10 @@ public class EquipoService {
         List<Usuario> usuarios = new ArrayList(equipo.getUsuarios());
         return usuarios;
     }
+
+    @Transactional
+    public void borrarEquipo(Long equipoId) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+        equipoRepository.delete(equipo);
+    }
 }
