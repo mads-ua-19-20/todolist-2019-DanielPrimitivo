@@ -228,4 +228,21 @@ public class EquipoServiceTest {
         // THEN
         // Se produce una excepción comprobada con el expected del test
     }
+
+    @Test
+    @Transactional
+    public void testModificarEquipo() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+        Equipo equipo = equipoService.nuevoEquipo("Proyecto Zafiro");
+        Long idNuevoEquipo = equipo.getId();
+
+        // WHEN
+        Equipo equipoModificado = equipoService.modificaEquipo(idNuevoEquipo, "Equipo Prueba");
+        Equipo equipoBD = equipoService.findById(idNuevoEquipo);
+
+        // THEN
+        assertThat(equipoModificado.getNombre()).isEqualTo("Equipo Prueba");
+        assertThat(equipoBD.getNombre()).isEqualTo("Equipo Prueba");
+    }
 }

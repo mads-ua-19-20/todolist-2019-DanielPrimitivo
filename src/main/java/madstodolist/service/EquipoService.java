@@ -99,6 +99,15 @@ public class EquipoService {
     }
 
     @Transactional
+    public Equipo modificaEquipo(Long equipoId, String nuevoNombre) {
+        Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
+
+        equipo.setNombre(nuevoNombre);
+        equipoRepository.save(equipo);
+        return equipo;
+    }
+
+    @Transactional
     public void borrarEquipo(Long equipoId) {
         Equipo equipo = equipoRepository.findById(equipoId).orElse(null);
         if (equipo == null) {
