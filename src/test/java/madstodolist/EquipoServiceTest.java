@@ -191,4 +191,16 @@ public class EquipoServiceTest {
         // THEN
         // Se produce una excepción comprobada con el expected del test
     }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testEquipoDelUsuarioNoContiene() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.delUsuarioEquipo(2L, 3L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
 }

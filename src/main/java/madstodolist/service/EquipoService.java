@@ -68,6 +68,10 @@ public class EquipoService {
             throw new EquipoServiceException("Usuario " + usuarioId + " no existe al añadir a equipo");
         }
 
+        if (!equipo.getUsuarios().contains(usuario)) {
+            throw new EquipoServiceException("Equipo " + equipoId + " no contiene al usuario " + usuarioId);
+        }
+
         equipo.delUsuario(usuario);
         equipoRepository.save(equipo);
         return equipo;
