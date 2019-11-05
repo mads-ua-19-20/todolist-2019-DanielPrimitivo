@@ -216,4 +216,16 @@ public class EquipoServiceTest {
         // THEN
         assertThat(equipoService.findById(equipo.getId())).isNull();
     }
+
+    @Test(expected = EquipoServiceException.class)
+    public void testBorrarEquipoNoExiste() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+        equipoService.borrarEquipo(-1L);
+
+        // THEN
+        // Se produce una excepción comprobada con el expected del test
+    }
 }
