@@ -59,7 +59,7 @@ public class EquipoController {
         return "redirect:/equipos";
     }
 
-    @GetMapping("/equipos/{id}/usuarios/add")
+    @PostMapping("/equipos/{id}/usuarios/add")
     public String equipoAddUsuario(@PathVariable(value="id") Long equipoId, Model model,
                                    RedirectAttributes flash, HttpSession session) {
         managerUserSesion.comprobarUsuarioLogeadoSession(session);
@@ -86,7 +86,7 @@ public class EquipoController {
         return "redirect:/equipos/" + equipoId + "/usuarios";
     }
 
-    @GetMapping("/equipos/{id}/usuarios/del")
+    @PostMapping("/equipos/{id}/usuarios/del")
     public String equipoDelUsuario(@PathVariable(value="id") Long equipoId, Model model,
                                    RedirectAttributes flash, HttpSession session) {
         managerUserSesion.comprobarUsuarioLogeadoSession(session);

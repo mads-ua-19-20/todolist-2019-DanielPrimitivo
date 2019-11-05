@@ -75,7 +75,7 @@ public class EquipoWebTest {
 
         this.mockMvc.perform(get("/equipos/1/usuarios"))
                 .andDo(print())
-                .andExpect(content().string(containsString("/equipos/1/usuarios/add")));
+                .andExpect(content().string(containsString("action=\"/equipos/1/usuarios/add\"")));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class EquipoWebTest {
 
         this.mockMvc.perform(get("/equipos/1/usuarios"))
                 .andDo(print())
-                .andExpect(content().string(containsString("/equipos/1/usuarios/del")));
+                .andExpect(content().string(containsString("action=\"/equipos/1/usuarios/del\"")));
     }
 
     @Test
